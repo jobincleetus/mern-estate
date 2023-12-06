@@ -1,6 +1,8 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import userRouter from './routes/user.routes.js';
+
 
 dotenv.config();
 mongoose.connect(process.env.MONGODB)
@@ -9,6 +11,8 @@ mongoose.connect(process.env.MONGODB)
 
 const app = express();
 
-app.listen('3000', () => {
+app.listen(3000, () => {
     console.log('App is running')
 })
+
+app.use('/api/user', userRouter);
