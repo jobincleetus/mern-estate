@@ -1,3 +1,3 @@
 export const test = (req, res) => {
-    res.json({messgae: 'Hello from user api'})
+    res.json({message: 'Hello from user api'})
 }
