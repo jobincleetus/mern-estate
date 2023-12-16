@@ -9,9 +9,9 @@ export const signUp = async (req, res, next) => {
         return next(errorHandler(500, 'No valid data'))
     }
     const hashedPassword = bcrypt.hashSync(password, 10);
-    const userData = new User({userName, emailId, password: hashedPassword});
+    const newUser = new User({userName, emailId, password: hashedPassword});
     try {
-        await userData.save();
+        await newUser.save();
         res.status(200).json('User created successfully')
     } catch (err) {
         next(err);
@@ -33,6 +33,28 @@ export const signIn = async(req, res, next) => {
         res.cookie('access_token', token, {httpOnly: true}).status(200).json(rest);
     }
     catch(err) {
+        next(err);
+    }
+}
+
+export const google = async (req, res, next) => {
+    try {
+        const user = await User.findOne({emailId: req.body.email})
+        if(user) {
+            const token = jwt.sign({id: user._id}, process.env.JWT_SECRET);
+            const {password, ...rest} = user._doc;
+            res.cookie('auth_token', token, {httpOnly: true}).status(200).json(rest);
+        } else {
+            const userName = req.body.name.split(" ").join("").toLowerCase() + Math.random().toString(36).slice(-4);
+            const password = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
+            const hashedPassword = bcrypt.hashSync(password, 10);
+            const newUser = new User({userName, emailId: req.body.email, password: hashedPassword, avatar: req.body.photo});
+            await newUser.save();
+            const token = jwt.sign({id: newUser._id}, process.env.JWT_SECRET);
+            const {password: pass, ...rest} = newUser._doc;
+            res.cookie('auth_token', token, {httpOnly: true}).status(200).json(rest);
+        }
+    } catch(err) {
         next(err);
     }
 }
