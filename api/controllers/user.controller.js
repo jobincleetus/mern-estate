@@ -30,3 +30,16 @@ export const updateUserData = async (req, res, next) => {
         next(err);
     }
 }
+
+export const deleteUserData = async (req, res, next) => {
+    if(req.user.id !== req.params.id) {
+        return next(errorHandler(401, 'Unauthorized'));
+    }
+    try {
+        await User.findByIdAndDelete(req.params.id);
+        res.clearCookie('access_token');
+        res.status(200).json('User account has been deleted');
+    } catch(err) {
+        next(err);
+    }
+}
