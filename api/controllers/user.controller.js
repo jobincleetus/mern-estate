@@ -2,8 +2,9 @@ import bcrypt from "bcryptjs/dist/bcrypt.js"
 import User from "../models/user.model.js"
 import { errorHandler } from "../utils/error.js"
 
-export const test = (req, res) => {
-    res.json({message: 'Hello from user api'})
+export const signout = (req, res) => {
+    res.clearCookie('access_token');
+    res.status(200).json('User has been logged out');
 }
 
 export const updateUserData = async (req, res, next) => {

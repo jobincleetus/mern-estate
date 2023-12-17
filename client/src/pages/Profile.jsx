@@ -2,7 +2,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useEffect, useRef, useState} from 'react';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
 import { app } from '../firebase';
-import { deleteFailure, deleteStart, deleteSuccess, updateFailure, updateStart, updateSuccess } from '../store/slice/user.slice.js';
+import { deleteFailure, deleteStart, deleteSuccess, signOutFailure, signOutStart, signOutSuccess, updateFailure, updateStart, updateSuccess } from '../store/slice/user.slice.js';
 
 export default function Profile() {
   const fileRef = useRef(null);
@@ -102,6 +102,16 @@ export default function Profile() {
     }
   }
 
+  const handleSignOut = async () => {
+    dispatch(signOutStart());
+    try {
+      await fetch('/api/user/signout');
+      dispatch(signOutSuccess());
+    } catch(err) {
+      dispatch(signOutFailure(err));
+    }
+  }
+
   return (
     <div className='p-3 max-w-lg mx-auto'>
       <h1 className='text-3xl font-semibold text-center my-7'>Profile</h1>
@@ -123,7 +133,7 @@ export default function Profile() {
       </form>
       <div className="flex justify-between mt-5">
         <span className='text-red-700 cursor-pointer' onClick={handleDelete}>Delete account</span>
-        <span className='text-red-700 cursor-pointer'>Sign out</span>
+        <span className='text-red-700 cursor-pointer' onClick={handleSignOut}>Sign out</span>
       </div>
     </div>
   )
