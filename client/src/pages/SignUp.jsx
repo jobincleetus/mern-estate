@@ -13,7 +13,7 @@ const SignUp = () => {
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.id]: e.target.value.trim(),
+      [e.target.id]: e.target.value.replaceAll(" ", "").trim(),
     })
   }
 

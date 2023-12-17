@@ -43,7 +43,7 @@ export const google = async (req, res, next) => {
         if(user) {
             const token = jwt.sign({id: user._id}, process.env.JWT_SECRET);
             const {password, ...rest} = user._doc;
-            res.cookie('auth_token', token, {httpOnly: true}).status(200).json(rest);
+            res.cookie('access_token', token, {httpOnly: true}).status(200).json(rest);
         } else {
             const userName = req.body.name.split(" ").join("").toLowerCase() + Math.random().toString(36).slice(-4);
             const password = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
@@ -52,7 +52,7 @@ export const google = async (req, res, next) => {
             await newUser.save();
             const token = jwt.sign({id: newUser._id}, process.env.JWT_SECRET);
             const {password: pass, ...rest} = newUser._doc;
-            res.cookie('auth_token', token, {httpOnly: true}).status(200).json(rest);
+            res.cookie('access_token', token, {httpOnly: true}).status(200).json(rest);
         }
     } catch(err) {
         next(err);
