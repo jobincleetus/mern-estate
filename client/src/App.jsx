@@ -5,6 +5,7 @@ import About from "./pages/About";
 import CreateListing from "./pages/CreateListing";
 import EditListing from "./pages/EditListing";
 import Home from "./pages/Home";
+import Listingpage from "./pages/Listingpage";
 import Profile from "./pages/Profile";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
@@ -20,7 +21,7 @@ const App = () => {
           <Route path="/Profile" element={<Profile />} />
           <Route path="/listing/new" element={<CreateListing />} />
           <Route path="/listing/edit/:id" element={<EditListing />} />
-          <Route path="/listing/:id" element={<EditListing />} />
+          <Route path="/listing/:id" element={<Listingpage />} />
         </Route>
         <Route element={<SignInRoute />}>
           <Route path="/Sign-in" element={<SignIn />} />
